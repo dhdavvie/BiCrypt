@@ -87,7 +87,7 @@ if __name__ == '__main__':
                         help='Decrypt file', action='store_true')
     args = parser.parse_args()
 
-if vars(args)['decrypt'] is True:
+if args.decrypt:
     img_decrypt(args.file, args.first_password, args.second_password)
 else:
     img_encrypt(args.file, args.first_password, args.second_password)
