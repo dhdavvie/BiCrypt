@@ -20,12 +20,12 @@ Pyaes>=1.6.1
 
 ## Instructions
 
-For encrypt you file you will need to provied **two** passprhase and a file. Is recommend to use strongs passprhases using a combination of symbols, numbers and upper-lower case letters.
+For encrypt you file you will need to provied **two** passphrase and a file. Is recommend to use strongs passphrases using a combination of symbols, numbers and upper-lower case letters.
 
 The syntax in command line is:
 
 ```
-python BiCrypt.py FileName FirstPassphrase SecondPassprhase
+python BiCrypt.py FileName FirstPassphrase SecondPassphrase
 ```
 
 When you do that, the program generate a new file called 
@@ -37,7 +37,7 @@ For decrypt the file would be:
 python BiCrypt.py FileName.crypt FirstPassphrase SecondPassphrase
 ```
 
-**Note** that you need to put yours passprhrases in order, that is, just in the order as you put them when you encrypted the file, to can decrypt the file with sucess.
+**Note** that you need to put yours passphrases in order, that is, just in the order as you put them when you encrypted the file, to can decrypt the file with sucess.
 
 Also yo can append `#!/usr/bin/env python` to the header on `BiCrypt.py` 
 file, delete the file type (BiCrypt ~~.py~~), and then put that file in 
