@@ -23,31 +23,30 @@ import pyaes
 def img_encrypt(f1, f_password, s_password):
     """Encrypt the file"""
     with open('%s.crypt' % f1, 'wb') as file1:
-        file2 = open(f1, 'rb')
-        try:
-            assert os.stat(f1).st_size > 0
-            file2_content = file2.read()
-            file2.close()
-        except AssertionError:
-            print('EmptyFile: The file is empty.')
-        else:
-            key = sha256()
-            key.update(bytes(f_password, 'utf-8'))
-            key = key.digest()
-            even_bytes = file2_content[::2]
-            cipher = pyaes.AESModeOfOperationCTR(key)
-            cipher_even_bytes = cipher.encrypt(even_bytes)
-            key = sha256()
-            key.update(bytes(s_password, 'utf-8'))
-            key = key.digest()
-            odd_bytes = file2_content[1::2]
-            cipher = pyaes.AESModeOfOperationCTR(key)
-            cipher_odd_bytes = cipher.encrypt(odd_bytes)
-            joined_encrypted_bytes = []
-            for a, b in zip(cipher_even_bytes, cipher_odd_bytes):
-                joined_encrypted_bytes.append(a)
-                joined_encrypted_bytes.append(b)
-            file1.write(bytes(joined_encrypted_bytes))
+        with open(f1, 'rb') as file2:
+            try:
+                assert os.stat(f1).st_size > 0
+                file2_content = file2.read()
+            except AssertionError:
+                print('EmptyFile: The file is empty.')
+            else:
+                key = sha256()
+                key.update(bytes(f_password, 'utf-8'))
+                key = key.digest()
+                even_bytes = file2_content[::2]
+                cipher = pyaes.AESModeOfOperationCTR(key)
+                cipher_even_bytes = cipher.encrypt(even_bytes)
+                key = sha256()
+                key.update(bytes(s_password, 'utf-8'))
+                key = key.digest()
+                odd_bytes = file2_content[1::2]
+                cipher = pyaes.AESModeOfOperationCTR(key)
+                cipher_odd_bytes = cipher.encrypt(odd_bytes)
+                joined_encrypted_bytes = []
+                for a, b in zip(cipher_even_bytes, cipher_odd_bytes):
+                    joined_encrypted_bytes.append(a)
+                    joined_encrypted_bytes.append(b)
+                file1.write(bytes(joined_encrypted_bytes))
 
 
 def img_decrypt(f1, f_password, s_password):
@@ -70,9 +69,8 @@ def img_decrypt(f1, f_password, s_password):
         for a, b in zip(deciphers_even_bytes, deciphers_odd_bytes):
             joined_decrypt_bytes.append(a)
             joined_decrypt_bytes.append(b)
-        file2 = open('%s' % f1[:-6:], 'wb')
-        file2.write(bytes(joined_decrypt_bytes))
-        file2.close()
+        with open('%s' % f1[:-6:], 'wb') as file2:
+            file2.write(bytes(joined_decrypt_bytes))
 
 
 if __name__ == '__main__':

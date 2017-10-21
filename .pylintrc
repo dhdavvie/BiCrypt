@@ -1,0 +1,7 @@
+[MESSAGE CONTROL]
+
+disable=invalid-name
+
+[FORMAT]
+
+max-line-length=80
