@@ -15,12 +15,13 @@
 """Encrypt files with two different keys"""
 
 import argparse
+from getpass import getpass
 import os
 from hashlib import sha256
 import pyaes
 
 
-def img_encrypt(f1, f_password, s_password):
+def img_encrypt(f1, f_password=None, s_password=None):
     """Encrypt the file"""
     with open('%s.crypt' % f1, 'wb') as file1:
         with open(f1, 'rb') as file2:
@@ -49,7 +50,7 @@ def img_encrypt(f1, f_password, s_password):
                 file1.write(bytes(joined_encrypted_bytes))
 
 
-def img_decrypt(f1, f_password, s_password):
+def img_decrypt(f1, f_password=None, s_password=None):
     """Decrypt the file"""
     with open(f1, 'rb') as file1:
         file1_content = file1.read()
@@ -73,19 +74,50 @@ def img_decrypt(f1, f_password, s_password):
             file2.write(bytes(joined_decrypt_bytes))
 
 
+def get_passwords():
+    while True:
+        f_password = getpass(prompt='1st Password: ')
+
+        if args.safe:
+            f_password_c = getpass(prompt='Confirm 1st Password: ')
+
+            if f_password != f_password_c:
+                print('Passwords don\'t match')
+                continue
+
+        s_password = getpass(prompt='2nd Password: ')
+
+        if args.safe:
+            s_password_c = getpass(prompt='Confirm 2nd Password: ')
+
+            if s_password != s_password_c:
+                print('Passwords don\'t match')
+                continue
+
+        break
+
+    return [f_password, s_password]
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="""Encrypt and decrypt files
                                      with odd and even bytes
                                      """)
     parser.add_argument('file', metavar='File', help='File to encrypt',
                         type=str)
-    parser.add_argument('first_password', metavar='FirstPassphrase',
+    parser.add_argument('-f', '--first_password', metavar='FirstPassphrase',
                         help='first secret password,', type=str)
-    parser.add_argument('second_password', metavar='SecondPassphrase',
+    parser.add_argument('-s', '--second_password', metavar='SecondPassphrase',
                         help='second secret password,', type=str)
     parser.add_argument('-d', '--decrypt', dest='decrypt',
                         help='Decrypt file', action='store_true')
+    parser.add_argument('-ns', '--nosafety', dest='safe',
+                        help='Disable Password Confirmation (UNSAFE)',
+                        action='store_false')
     args = parser.parse_args()
+
+if args.first_password is None and args.second_password is None:
+    args.first_password, args.second_password = get_passwords()
 
 if args.decrypt:
     img_decrypt(args.file, args.first_password, args.second_password)
