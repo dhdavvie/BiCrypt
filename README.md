@@ -25,21 +25,23 @@ For encrypt you file you will need to provied **two** passphrase and a file. Is 
 The syntax in command line is:
 
 ```
-python BiCrypt.py FileName FirstPassphrase SecondPassphrase
+python BiCrypt.py [-f FirstPassphrase -s SecondPassphrase] [-ns] 
 ```
 
 When you do that, the program generate a new file called 
 `YOU_FILE_NAME.crypt` which is no more that you encrypted file.
 
+If you do not provide both passwords, the tool will prompt you for your passwords. The `-ns` flag is to turn off password confirmation (ie. Only enter each password once and no checking, UNSAFE)
+
 For decrypt the file would be:
 
 ```
-python BiCrypt.py FileName.crypt FirstPassphrase SecondPassphrase
+python BiCrypt.py -d [-f FirstPassphrase -s SecondPassphrase] [-ns] 
 ```
 
 **Note** that you need to put yours passphrases in order, that is, just in the order as you put them when you encrypted the file, to can decrypt the file with sucess.
 
-Also yo can append `#!/usr/bin/env python` to the header on `BiCrypt.py` 
+Also you can append `#!/usr/bin/env python` to the header on `BiCrypt.py` 
 file, delete the file type (BiCrypt ~~.py~~), and then put that file in 
 you `/usr/bin` folder for avoid use the whole `python` command.
 
